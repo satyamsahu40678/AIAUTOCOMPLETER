@@ -1,3 +1,4 @@
+import numpy as np
 from flask import Flask, render_template, jsonify, request
 from model_lstm import Model
 

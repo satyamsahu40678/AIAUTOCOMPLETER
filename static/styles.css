@@ -3,53 +3,57 @@ body {
     background-color: #f4f4f4;
     margin: 10px;
     padding: 10px;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
-.form{
-    width: 1000px;
+
+.form {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-#autocomplete { 
-    opacity: 0.6; 
-    background: transparent; 
-    position: absolute; 
-    box-sizing: border-box; 
-    cursor: text; 
-    pointer-events: none; 
-    color: black; 
-    width: 421px;
-    border:none;
-} 
-.vc_textarea{ 
-    padding: 10px; 
-    min-height: 100px; 
-    resize: none; 
-} 
-#mainInput{ 
-    background: transparent; 
-    justify-content: center;
-    color: black; 
-    opacity: 1; 
-    width: 980px; 
+
+#autocomplete {
+    opacity: 0.6;
+    background: transparent;
+    position: absolute;
+    box-sizing: border-box;
+    cursor: text;
+    pointer-events: none;
+    color: black;
+    width: 100%;
+    border: none;
+    font-size: 25px;
+}
+
+.vc_textarea {
+    padding: 10px;
+    min-height: 100px;
+    resize: none;
+}
+
+#mainInput {
+    background: transparent;
+    color: black;
+    width: 100%;
     height: 500px;
     font-size: 25px;
+    border: none;
+    outline: none;
 }
-#mainInput:hover{ 
-    background: transparent; 
-    color: rgba(13, 1, 57, 0.763); 
-    opacity: 1; 
 
-    font-size: 25px;
-} 
-#autocomplete{ 
-    opacity: 0.6; 
+#mainInput:hover {
     background: transparent;
-    padding: 11px 11px 11px 11px; 
+    color: rgba(13, 1, 57, 0.763);
 }
 
 .container {
     width: 70%;
-    height: 800px;
     margin: 20px auto;
     padding: 20px;
     background-color: #fff;
@@ -57,18 +61,11 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-label[for="output_sentence"] {
-    font-size: 30px; 
-    font-weight: bold; 
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; 
-    margin-bottom: 10px; 
-}
-
-label[for="input_sentence"] {
-    font-size: 30px; 
-    font-weight: bold; 
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; 
-    margin-bottom: 10px; 
+label[for="output_sentence"], label[for="input_sentence"] {
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-bottom: 10px;
 }
 
 h1 {
@@ -77,13 +74,35 @@ h1 {
     font-size: 50px;
 }
 
+.container span {
+    animation: colorChange 3s infinite;
+}
+
+@keyframes colorChange {
+    0% {
+        color: #007bff;
+    }
+    25% {
+        color: #ff5733;
+    }
+    50% {
+        color: #33ff57;
+    }
+    75% {
+        color: #3357ff;
+    }
+    100% {
+        color: #007bff;
+    }
+}
+
+
 .input-section {
-    width: 1000px;
+    width: 100%;
 }
 
 textarea {
     width: 100%;
-    align-items: center;
     padding: 10px;
     height: 200px;
     margin-top: 10px;
@@ -92,7 +111,6 @@ textarea {
 }
 
 .btn {
-    align-items: center;
     display: block;
     width: 100%;
     margin-top: 10px;
@@ -100,7 +118,6 @@ textarea {
     padding: 12px;
     font-size: 20px;
     margin-bottom: 20px;
-    border: 10px;
     border-radius: 4px;
     background-color: #007bff;
     color: #fff;

@@ -1,139 +1,95 @@
 $(document).ready(function(){
-    //dummy random output. You can use api
-function randomobj(obj) {
-    var objkeys = Object.keys(obj)
-    return objkeys[Math.floor(Math.random() * objkeys.length)]
-}
+    var autocomplete = document.getElementById("autocomplete");
+    var mainInput = document.getElementById("mainInput");
+    var foundName = '';
+    var predicted = '';
+    var apibusy = false;
 
-var autocomplete = document.querySelectorAll("#autocomplete");
-var mainInput = document.querySelectorAll("#mainInput");
-var foundName = '';
-var predicted = '';
-var apibusy= false;
-var mlresponsebusy = false;
-
-$('#mainInput').keyup(function(e) {
-//check if null value send
-    if (mainInput[0].value == '') {
-        autocomplete[0].textContent = '';
-        return;
-}
-//check if space key press
-    if (e.keyCode == 32) {
-        CallMLDataSetAPI(e);
-        scrolltobototm();
-        return;
-}
-//check if Backspace key press
-    if (e.key == 'Backspace'){
-        autocomplete[0].textContent = '';
-        predicted = '';
-        apibusy = true;
-        return;
-}
-//check if ArrowRight or Tab key press
-    if(e.key != 'ArrowRight'){
-        if (autocomplete[0].textContent != '' && predicted){
-            var first_character = predicted.charAt(0);
-            if(e.key == first_character){
-                var s1 = predicted;
-                var s2 = s1.substr(1);
-                predicted = s2;
-                apibusy = true;
-            }else{
-                autocomplete[0].textContent = '';
-                apibusy= false;
-            }
-        }else{
-            autocomplete[0].textContent = '';
-            apibusy= false;
-        }
-        return;
-        }else{
-            if(predicted){
-                if (apibusy == true){
-                    apibusy= false;
-                }
-                if (apibusy== false){
-                    mainInput[0].value = foundName;
-                    autocomplete[0].textContent = '';
-                }
-            }else{
+    $('#mainInput').keyup(function(e) {
+        if (mainInput.value == '') {
+            autocomplete.textContent = '';
             return;
         }
-    }
+
+        if (e.keyCode == 32) { // Space key
+            CallMLDataSetAPI(e);
+            scrolltobototm();
+            return;
+        }
+
+        if (e.key == 'Backspace') {
+            autocomplete.textContent = '';
+            predicted = '';
+            apibusy = true;
+            return;
+        }
+
+        if (e.key != 'ArrowRight' && e.key != 'Tab') {
+            if (autocomplete.textContent != '' && predicted) {
+                var first_character = predicted.charAt(0);
+                if (e.key == first_character) {
+                    predicted = predicted.substr(1);
+                    apibusy = true;
+                } else {
+                    autocomplete.textContent = '';
+                    apibusy = false;
+                }
+            } else {
+                autocomplete.textContent = '';
+                apibusy = false;
+            }
+            return;
+        } else {
+            if (predicted) {
+                if (!apibusy) {
+                    mainInput.value = foundName;
+                    autocomplete.textContent = '';
+                }
+            } else {
+                return;
+            }
+        }
+    });
 
     function CallMLDataSetAPI(event) {
-        //call api and get response
-        //call api
-       fetch('http://127.0.0.1:5000/api/predict?input_string='+event.target.value)
+        fetch('http://127.0.0.1:5000/api/predict?input_string='+event.target.value)
         .then(response => response.json())
         .then(data => {
-            console.log(data)
-            if(data.predicted != ''){
-            predicted = data.predicted;
-            var new_text = event.target.value + data.predicted;
-            autocomplete[0].textContent = new_text;
-            foundName = new_text
-        }else{
-            predicted = '';
-            var new_text1 = event.target.value + predicted;
-            autocomplete[0].textContent = new_text1;
-            foundName = new_text1
-        }
-        }
-        )
+            console.log(data);
+            if (data.predicted != '') {
+                predicted = data.predicted;
+                autocomplete.innerHTML = event.target.value + data.predicted;
+                foundName = event.target.value + data.predicted;
+            } else {
+                predicted = '';
+                autocomplete.textContent = event.target.value;
+                foundName = event.target.value;
+            }
+        });
+    }
 
-
-
-
-
-
-
-
-    };
-});
-$('#mainInput').keypress(function(e) {
-    var sc = 0;
-    $('#mainInput').each(function () {
-        this.setAttribute('style', 'height:' + (0) + 'px;overflow-y:hidden;');
-        this.setAttribute('style', 'height:' + (this.scrollHeight+3) + 'px;overflow-y:hidden;');
-        sc = this.scrollHeight;
-    });
-    $('#autocomplete').each(function () {
-        if (sc <=400){
-            this.setAttribute('style', 'height:' + (0) + 'px;overflow-y:hidden;');
-            this.setAttribute('style', 'height:' + (sc+2) + 'px;overflow-y:hidden;');
-        }
-    }).on('input', function () {
-        this.style.height = 0;
-        this.style.height = (sc+2) + 'px';
-    });
-});
     function scrolltobototm() {
         var target = document.getElementById('autocomplete');
         var target1 = document.getElementById('mainInput');
         setInterval(function(){
             target.scrollTop = target1.scrollHeight;
         }, 1000);
-    };
-    $( "#mainInput" ).keydown(function(e) {
-        if (e.keyCode === 9) {
+    }
+
+    $("#mainInput").keydown(function(e) {
+        if (e.keyCode === 9) { // Tab key
             e.preventDefault();
             presstabkey();
         }
     });
+
     function presstabkey() {
-        if(predicted){
-            if (apibusy == true){
-                apibusy= false;
-            }
-            if (apibusy== false){
-                mainInput[0].value = foundName;
-                autocomplete[0].textContent = '';
-            }
-        }else{
-        return;
+        if (predicted) {
+            mainInput.value = foundName;
+            autocomplete.textContent = '';
+            predicted = '';
+        } else {
+            return;
         }
-    };
+    }
 });

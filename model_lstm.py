@@ -10,7 +10,7 @@ import pickle
 class Model:
     def __init__(self):
         self.model=None
-        file = open('tokenizer', 'rb+')
+        file = open('tokenizer.unknown', 'rb+')
         self.tokenizer = pickle.load(file)
         file.close()
         self.max_sequence_len=28
